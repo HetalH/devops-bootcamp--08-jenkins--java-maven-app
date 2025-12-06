@@ -22,10 +22,12 @@ pipeline{
                         }
                     }
                 }
-        stage("build docker image"){
+        stage("build and push image"){
                     steps {
                         script {
                               buildImage 'hetallearn/demo-app:jma-3.0'
+                              dockerLogin()
+                              dockerPush 'hetallearn/demo-app:jma-3.0'
                             }
                         }
                     }
