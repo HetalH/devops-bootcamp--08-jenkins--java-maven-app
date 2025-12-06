@@ -25,7 +25,7 @@ pipeline{
         stage("build docker image"){
                     steps {
                         script {
-                              buildImage()
+                              buildImage 'hetallearn/demo-app:jma-3.0'
                             }
                         }
                     }
