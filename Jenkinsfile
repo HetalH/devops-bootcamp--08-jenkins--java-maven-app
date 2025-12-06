@@ -20,6 +20,7 @@ pipeline {
                 }
             }
         }
+        
         stage("build docker image"){
             steps {
                 script {
