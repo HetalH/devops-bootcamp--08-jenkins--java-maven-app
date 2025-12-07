@@ -5,7 +5,7 @@ pipeline{
             steps {
                 script {
                     echo "Testing the application..."
-                    echo "Testin123"
+                    echo "Testin123456"
                 }
             }
         }
