@@ -62,14 +62,13 @@ pipeline{
                          withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_TOKEN')]) {
                                     sh 'git config user.email "trivedi.hetal79@gmail.com"'
                                     sh 'git config user.name "jenkins"'
-                                    sh 'git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"'
                                     sh 'git status'
                                     sh 'git branch'
                                     sh 'git config --list'
                                     sh 'git remote set-url origin https://${GITHUB_TOKEN}@github.com/HetalH/devops-bootcamp--08-jenkins--java-maven-app.git'
                                     sh 'git add .'
                                     sh  'git commit -m "ci: version bump"'
-                                    sh 'git push origin HEAD:jenkins-jobs'
+                                    sh 'git push https://${GITHUB_TOKEN}@github.com/HetalH/devops-bootcamp--08-jenkins--java-maven-app.git HEAD:jenkins-jobs'
                                 }
                      }
                  }
