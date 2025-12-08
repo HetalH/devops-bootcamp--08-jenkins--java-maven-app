@@ -22,9 +22,12 @@ pipeline{
          stage("increment the version"){
                     steps {
                         script {
-                            sh 'mvn build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion} versions:commit'
+                            echo "increment pom version"
+                            sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.majorVersion}.\\${parsedVersion.minorVersion}.\\${parsedVersion.nextIncrementalVersion} versions:commit'
+                            echo "fetch version"
                             def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
                             def version = matcher[0][1]
+                            echo "$version - new version number"
                             env.IMAGE_NAME = "$version-$BUILD_NUMBER"
                         }
                     }
