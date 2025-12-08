@@ -42,9 +42,9 @@ pipeline{
         stage("build and push image"){
                     steps {
                         script {
-                              buildImage "hetallearn/demo-app:jma-$IMAGE_NAME"
+                              buildImage "hetallearn/demo-app:jma-${IMAGE_NAME}"
                               dockerLogin()
-                              dockerPush "hetallearn/demo-app:jma-$IMAGE_NAME"
+                              dockerPush "hetallearn/demo-app:jma-${IMAGE_NAME}"
                             }
                         }
                     }
@@ -56,5 +56,22 @@ pipeline{
                     }
                 }
             }
+        stage("commit version update"){
+                 steps {
+                     script {
+                         withCredentials([script.usernamePassword( credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                                    sh 'git config user.email "trivedi.hetal79@gmail.com"'
+                                    sh 'git config user.name "jenkins"'
+                                    sh 'git status'
+                                    sh 'git branch'
+                                    sh 'git config --list'
+                                    sh 'git remote set-url origin https://${USER}:${PASS}@github.com/HetalH/devops-bootcamp--08-jenkins--java-maven-app.git'
+                                    sh 'git add .'
+                                    sh  'git commit -m "ci: version bump"'
+                                    sh 'git push origin HEAD:jenkins-jobs'
+                                }
+                     }
+                 }
+             }
     }
 }
