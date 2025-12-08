@@ -19,7 +19,7 @@ pipeline{
                         }
                     }
                 }
-         stage("init"){
+         stage("increment the version"){
                     steps {
                         script {
                             sh 'mvn build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion} versions:commit'
