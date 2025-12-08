@@ -62,6 +62,7 @@ pipeline{
                          withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_TOKEN')]) {
                                     sh 'git config user.email "trivedi.hetal79@gmail.com"'
                                     sh 'git config user.name "jenkins"'
+                                    sh 'git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"'
                                     sh 'git status'
                                     sh 'git branch'
                                     sh 'git config --list'
