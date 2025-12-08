@@ -60,7 +60,7 @@ pipeline{
                  steps {
                      script {
                          withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_TOKEN')]) {
-                                    sh 'git config user.email "trivedi.hetal79@gmail.com"'
+                                    sh 'git config user.email "jenkins@example.com"'
                                     sh 'git config user.name "jenkins"'
                                     sh 'git status'
                                     sh 'git branch'
