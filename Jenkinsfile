@@ -19,6 +19,7 @@ pipeline{
                         }
                     }
                 }
+        
          stage("increment the version"){
                     steps {
                         script {
