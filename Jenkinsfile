@@ -11,6 +11,9 @@ pipeline{
      tools {
             maven 'maven-3.9'
         }
+     environment {
+        IMAGE_NAME = 'hetallearn/demo-app:java-maven-1.0'
+     }
     stages{
          stage("init"){
                     steps {
@@ -20,22 +23,10 @@ pipeline{
                     }
                 }
         
-         stage("increment the version"){
+        stage("build app"){
                     steps {
                         script {
-                            echo "increment pom version"
-                            sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.majorVersion}.\\${parsedVersion.minorVersion}.\\${parsedVersion.nextIncrementalVersion} versions:commit'
-                            echo "fetch version"
-                            def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
-                            def version = matcher[0][1]
-                            echo "$version - new version number"
-                            env.IMAGE_NAME = "$version-$BUILD_NUMBER"
-                        }
-                    }
-                }
-        stage("build jar"){
-                    steps {
-                        script {
+                          echo 'building application jar...'
                           buildJar()
                         }
                     }
@@ -43,9 +34,9 @@ pipeline{
         stage("build and push image"){
                     steps {
                         script {
-                              buildImage "hetallearn/demo-app:jma-${IMAGE_NAME}"
+                              buildImage(env.IMAGE_NAME)
                               dockerLogin()
-                              dockerPush "hetallearn/demo-app:jma-${IMAGE_NAME}"
+                              dockerPush(env.IMAGE_NAME)
                             }
                         }
                     }
@@ -54,25 +45,13 @@ pipeline{
                 steps {
                     script {
                         gv.deployApp()
+                        def dockerCmd = "docker run -p 3080:3080 -d ${IMAGE_NAME}"
+                        sshagent(['ec2-server-key']) {
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@3.238.29.241 ${dockerCmd}"
+                        }
                     }
                 }
             }
-        stage("commit version update"){
-                 steps {
-                     script {
-                         withCredentials([string(credentialsId: 'github-pat', variable: 'GITHUB_TOKEN')]) {
-                                    sh 'git config user.email "jenkins@example.com"'
-                                    sh 'git config user.name "jenkins"'
-                                    sh 'git status'
-                                    sh 'git branch'
-                                    sh 'git config --list'
-                                    sh 'git remote set-url origin https://${GITHUB_TOKEN}@github.com/HetalH/devops-bootcamp--08-jenkins--java-maven-app.git'
-                                    sh 'git add .'
-                                    sh  'git commit -m "ci: version bump"'
-                                    sh 'git push https://HetalH:${GITHUB_TOKEN}@github.com/HetalH/devops-bootcamp--08-jenkins--java-maven-app.git HEAD:jenkins-shared-lib'
-                                }
-                     }
-                 }
-             }
+
     }
 }
