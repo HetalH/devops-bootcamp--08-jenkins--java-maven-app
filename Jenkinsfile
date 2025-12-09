@@ -78,7 +78,7 @@ pipeline{
                                     sh 'git remote set-url origin https://${GITHUB_TOKEN}@github.com/HetalH/devops-bootcamp--08-jenkins--java-maven-app.git'
                                     sh 'git add .'
                                     sh  'git commit -m "ci: version bump"'
-                                    sh 'git push https://HetalH:${GITHUB_TOKEN}@github.com/HetalH/devops-bootcamp--08-jenkins--java-maven-app.git HEAD:jenkins-shared-lib'
+                                    sh 'git push https://HetalH:${GITHUB_TOKEN}@github.com/HetalH/devops-bootcamp--08-jenkins--java-maven-app.git HEAD:aws-jenkins-jobs'
                                 }
                      }
                  }
