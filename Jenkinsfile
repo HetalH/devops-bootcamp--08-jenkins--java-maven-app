@@ -45,9 +45,9 @@ pipeline{
         stage("build and push image"){
                     steps {
                         script {
-                              buildImage(env.IMAGE_NAME)
+                              buildImage "hetallearn/demo-app:${IMAGE_NAME}"
                               dockerLogin()
-                              dockerPush(env.IMAGE_NAME)
+                              dockerPush "hetallearn/demo-app:${IMAGE_NAME}"
                             }
                         }
                     }
