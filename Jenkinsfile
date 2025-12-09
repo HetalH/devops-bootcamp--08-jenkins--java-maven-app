@@ -29,7 +29,10 @@ pipeline{
             }
              steps {
                  script {
-                     echo "Deploying the application..."
+                    def dockerCmd = 'docker run -p 3080:3080 -d hetallearn/web-app:1.0'
+                     sshagent(['ec2-server-key']) {
+                         sh "ssh -o StrictHostKeyChecking=no ec2-user@3.238.29.241 ${dockerCmd}"
+                     }
                  }
              }
          }
