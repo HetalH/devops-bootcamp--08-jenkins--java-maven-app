@@ -19,16 +19,9 @@ pipeline {
             steps {
               script {
                 echo "calling ansible playbook to configure ec2 instances"
-                withCredentials([sshUserPrivateKey(credentialsId: 'ansible-server-key', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
-                   sshCommand remote: [
-                                        name: 'ansible-server',
-                                        host: '157.245.99.195',
-                                        user: user,
-                                        identityFile: keyfile,
-                                        port: 22,
-                                        allowAnyHosts: true
-                                      ], command: "ls -l"
-                }
+               sshagent(['ansible-server-key']){
+                                     sh 'ansible-playbook my-playbook.yaml'
+                                   }
               }
             }
           }
