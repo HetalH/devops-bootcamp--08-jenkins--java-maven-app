@@ -27,7 +27,7 @@ pipeline {
                                         identityFile: keyfile,
                                         allowAnyHosts: true
                                     ]
-                     sshCommand remote: remote, command: "ls -l", pty: true
+                     sshCommand remote: remote, command: "ls -l"
                 }
             }
         }
