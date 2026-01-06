@@ -15,8 +15,6 @@
 
 - name: Install Docker-compose
   hosts: all
-  become: yes
-  become_user: hetal
   tasks:
     - name: Create docker-compose directory
       file:
